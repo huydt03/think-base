@@ -1,0 +1,15 @@
+{
+    "name": "huydt/think-base",
+    "autoload": {
+        "psr-4": {
+            "Huydt\\ThinkBase\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "drhuy",
+            "email": "huydt0307@gmail.com"
+        }
+    ],
+    "require": {}
+}
