@@ -1,14 +1,16 @@
 <?php
-namespace app\model;
+namespace Huydt\ThinkBase;
 
 use think\Model;
 
 class BaseModel extends Model
 {
 
-	public static $middleware = [];
+	public static $middleware = [Middleware\Permission::class];
 
-	// public static $auth_middleware = \app\middleware\Auth::class;
+	public static $auth_middleware = Middleware\Auth::class;
+
+	public static $permissions = ['index', 'create', 'save', 'read', 'edit', 'update', 'delete'];
 
     public static $fillable = [];
 
@@ -17,4 +19,5 @@ class BaseModel extends Model
     public function rules(){
         return [];
     }
+
 }

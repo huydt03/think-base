@@ -17,32 +17,45 @@ class BaseController
 
     protected $Auth;
 
-    protected $permission;
+    public static $permissions;
 
     function _getVar($var, $default = []){
         return isset($this-> model::$$var)? $this-> model::$$var: $default;
     }
 
+    function _toPermission($name){
+        return strtolower($this->class_name).'s.'.$name;
+    }
+
+    function _checkPermission($name){
+        $permission = $this-> _toPermission($name);
+        if(isset(self::$permissions[$permission])) 
+            if($this-> Auth)
+                return (isset($this-> Auth::$permissions[$permission]) || isset($this-> Auth::permissions()[$permission]));
+            else
+                return false;
+        else
+            return true;
+    }
+
     function __construct(){
         $this-> class_name = substr(strrchr($this-> model, "\\"), 1);
         $this-> middleware = $this-> _getVar('middleware');
-        $this-> permission = $this-> _getVar('permission', ['list', 'create', 'save', 'read', 'edit', 'update', 'delete']);
-        $this-> Auth = $this-> _getVar('auth_middleware');
+        $this-> Auth = $this-> _getVar('auth_middleware', null);
 
         // init
-       $this-> middleware = array_merge($this-> middleware, [$this-> Auth]);
+        if(isset($this-> Auth))
+            $this-> middleware = array_merge([$this-> Auth], $this-> middleware);
+
+        $permissions = $this-> _getVar('permissions');
+        foreach ($permissions as $value) {
+            self::$permissions[$this-> _toPermission($value)] = 1;
+        }
     }
 
-    /**
-     * 显示资源列表
-     *
-     * @return \think\Response
-     */
-    public function index_auth()
+    public function permissions()
     {
-        $user = $this-> Auth::user();
-        $name = strtolower($this-> class_name);
-        return $user[$name]? $user[$name] : $user[$name."s"];
+        return json(self::$permissions);
     }
 
     /**
@@ -51,8 +64,13 @@ class BaseController
      * @return \think\Response
      */
     public function index()
-    {
-        return $this-> model::select();
+    {   
+        if(!$this-> Auth)
+            return $this-> model::select();
+
+        $user = $this-> Auth::user();
+        $name = strtolower($this-> class_name);
+        return $user[$name]? $user[$name] : $user[$name."s"];
     }
 
     /**
@@ -166,7 +184,6 @@ class BaseController
      */
     public function delete($id)
     {
-
         $model = $this-> model::find($id);
 
         if(!$model)

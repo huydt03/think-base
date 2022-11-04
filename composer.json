@@ -2,7 +2,8 @@
     "name": "huydt/think-base",
     "autoload": {
         "psr-4": {
-            "Huydt\\ThinkBase\\": "src/"
+            "Huydt\\ThinkBase\\": "src/",
+            "Huydt\\ThinkBase\\Middleware": "src/middleware/"
         }
     },
     "authors": [
