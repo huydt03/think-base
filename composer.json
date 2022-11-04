@@ -3,7 +3,7 @@
     "autoload": {
         "psr-4": {
             "Huydt\\ThinkBase\\": "src/",
-            "Huydt\\ThinkBase\\Middleware": "src/middleware/"
+            "Huydt\\ThinkBase\\Middleware\\": "src/middleware/"
         }
     },
     "authors": [
