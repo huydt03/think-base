@@ -1,16 +1,17 @@
 <?php
 declare (strict_types = 1);
 
-namespace Huydt\ThinkJwt\Middleware;
+namespace Huydt\ThinkBase\Middleware;
+
 use Huydt\ThinkJwt\JWT;
 use app\model\User;
 
 class Auth
 {
 
-    public static $user_id;
-
     public static $user;
+
+    public static $user_id;
 
     public static $permissions;
 

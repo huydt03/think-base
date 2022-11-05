@@ -27,17 +27,6 @@ class BaseController
         return strtolower($this->class_name).'s.'.$name;
     }
 
-    function _checkPermission($name){
-        $permission = $this-> _toPermission($name);
-        if(isset(self::$permissions[$permission])) 
-            if($this-> Auth)
-                return (isset($this-> Auth::$permissions[$permission]) || isset($this-> Auth::permissions()[$permission]));
-            else
-                return false;
-        else
-            return true;
-    }
-
     function __construct(){
         $this-> class_name = substr(strrchr($this-> model, "\\"), 1);
         $this-> middleware = $this-> _getVar('middleware');

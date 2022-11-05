@@ -1,7 +1,7 @@
 <?php
 declare (strict_types = 1);
 
-namespace Huydt\ThinkJwt\Middleware;
+namespace Huydt\ThinkBase\Middleware;
 
 class Permission
 {
